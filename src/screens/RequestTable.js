@@ -8,8 +8,6 @@ import { history } from 'store';
 import { actions } from 'modules/app.js';
 import * as api from 'utils/api';
 
-import Layout from 'screens/app/Layout';
-
 class RequestTable extends Component {
   componentDidMount() {
     const { requestRequests } = this.props;
@@ -49,7 +47,7 @@ class RequestTable extends Component {
     });
 
     return (
-      <Layout>
+      <>
         <h3>Requests</h3>
         <Button
           style={{
@@ -93,7 +91,7 @@ class RequestTable extends Component {
           </thead>
           <tbody>{requestRows}</tbody>
         </Table>
-      </Layout>
+      </>
     );
   }
 }

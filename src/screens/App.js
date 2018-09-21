@@ -7,6 +7,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 // Import high-level components
+import Layout from 'screens/app/Layout';
 import RequestTable from 'screens/RequestTable';
 import RequestForm from 'screens/RequestForm';
 
@@ -18,10 +19,10 @@ library.add(faCalendarAlt);
 
 // App component with routes
 export const App = () => (
-  <>
+  <Layout>
     <Route exact path="/" component={RequestTable} />
     <Route exact path="/form" component={RequestForm} />
-  </>
+  </Layout>
 );
 
 export default hot(module)(App);

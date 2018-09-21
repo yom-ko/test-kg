@@ -8,10 +8,8 @@ import { Button, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } fr
 import { history } from 'store';
 import { actions } from 'modules/app.js';
 
-import Layout from 'screens/app/Layout';
-
 const RequestForm = () => (
-  <Layout>
+  <>
     <h3>Create request</h3>
     <Form>
       <FormGroup>
@@ -46,7 +44,7 @@ const RequestForm = () => (
     >
       Create
     </Button>
-  </Layout>
+  </>
 );
 
 // Map state and dispatch() to the component props
