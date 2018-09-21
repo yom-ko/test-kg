@@ -1,0 +1,20 @@
+{
+  "requests": [
+    {
+      "id": "req-00001",
+      "date_from": "2018/08/20",
+      "date_until": "2018/09/01",
+      "passengers": 2,
+      "price": 200,
+      "currency": "USD"
+    },
+    {
+      "id": "req-00002",
+      "date_from": "2018/08/25",
+      "date_until": "2018/09/10",
+      "passengers": 4,
+      "price": 120,
+      "currency": "EUR"
+    }
+  ]
+}
