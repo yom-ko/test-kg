@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Button, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
@@ -33,7 +32,9 @@ const RequestForm = () => (
       style={{
         backgroundColor: '#58B957',
         borderColor: '#58B957',
-        padding: '0.450rem 1.8rem'
+        padding: '0.450rem 1.8rem',
+        margin: '2rem 0 0 auto',
+        float: 'right'
       }}
       onClick={() => history.push('/')}
     >
