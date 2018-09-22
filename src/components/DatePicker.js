@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Label, InputGroup, InputGroupAddon, Input, Tooltip } from 'reactstrap';
+import { Label, InputGroup, InputGroupAddon, InputGroupText, Input, Tooltip } from 'reactstrap';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import Octicon, { Calendar } from '@githubprimer/octicons-react';
 
 export class DatePicker extends Component {
   constructor(props) {
@@ -97,17 +98,27 @@ export class DatePicker extends Component {
               onChange={() => {}}
               id="datepicker_input"
             />
-            <InputGroupAddon addonType="append">Cal</InputGroupAddon>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText
+                style={{
+                  borderLeft: 'none',
+                  borderTopRightRadius: '4px',
+                  borderBottomRightRadius: '4px'
+                }}
+              >
+                <Octicon icon={Calendar} size="small" />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Tooltip
+              target="datepicker_input"
+              placement="left"
+              hideArrow
+              style={{ color: '#000', backgroundColor: '#e9ecef' }}
+              isOpen={tooltipOpen}
+            >
+              Select a range of 2, 5, or 21 days (start/end inclusive)!
+            </Tooltip>
           </InputGroup>
-          <Tooltip
-            target="datepicker_input"
-            placement="left"
-            style={{ color: '#000', backgroundColor: '#e9ecef' }}
-            hideArrow
-            isOpen={tooltipOpen}
-          >
-            Select a range of 2, 5, or 21 days (start/end inclusive)!
-          </Tooltip>
         </DateRangePicker>
       </>
     );
