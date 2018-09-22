@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import { Button, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 import { history } from 'store';
-import { actions } from 'modules/app.js';
+import { actions } from 'modules/app';
+import DatePicker from 'components/DatePicker';
 
 const RequestForm = () => (
   <>
-    <h3>Create request</h3>
+    <h3 style={{ marginBottom: '2rem' }}>Create request</h3>
     <Form>
       <FormGroup>
         <Label for="price">Price</Label>
@@ -22,16 +23,10 @@ const RequestForm = () => (
       </FormGroup>
       <FormGroup>
         <Label for="passengers">Passengers</Label>
-        <Input type="number" step="1" id="passengers" />
+        <Input type="number" min="1" step="1" id="passengers" />
       </FormGroup>
       <FormGroup>
-        <Label for="from_until">From / Until</Label>
-        <InputGroup>
-          <Input type="datetime-local" id="from_until" />
-          <InputGroupAddon addonType="append">
-            {/* <FontAwesomeIcon icon="calendar-alt" size="2x" /> */}
-          </InputGroupAddon>
-        </InputGroup>
+        <DatePicker />
       </FormGroup>
     </Form>
     <Button

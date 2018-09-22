@@ -13,6 +13,7 @@ import RequestForm from 'screens/RequestForm';
 
 // Import Bootstrap styles (shared by all components)
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-daterangepicker/daterangepicker.css';
 
 // Initialize custom fontawesome library with icons
 library.add(faCalendarAlt);

@@ -9,6 +9,6 @@ export const fetchRequests = url => fetch(url)
     console.log('A problem with the fetch operation: ', error.message);
   });
 
-export const url = 'http://localhost:3000/requests/';
+export const url = 'http://localhost:3004/requests/';
 
 export default fetchRequests;
