@@ -100,7 +100,7 @@ export class RequestForm extends Component {
         <h3 style={{ marginBottom: '2rem' }}>Create request</h3>
         <Form>
           <FormGroup row>
-            <Label for="price" sm={2}>
+            <Label for="price" sm={2} style={{ marginLeft: '2rem' }}>
               Price
             </Label>
             <Col sm={5}>
@@ -112,7 +112,7 @@ export class RequestForm extends Component {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label for="passengers" sm={2}>
+            <Label for="passengers" sm={2} style={{ marginLeft: '2rem' }}>
               Passengers
             </Label>
             <Col sm={5}>
