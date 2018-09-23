@@ -22,10 +22,12 @@ export class RequestForm extends Component {
     super(props);
     this.handleApply = this.handleApply.bind(this);
     this.state = {
-      startDate: '',
-      endDate: '',
-      status: '',
-      tooltipOpen: false
+      dates: {
+        startDate: '',
+        endDate: '',
+        status: '',
+        tooltipOpen: false
+      }
     };
   }
 
@@ -60,40 +62,61 @@ export class RequestForm extends Component {
           Number(endDate.format('DD')) - Number(startDate.format('DD')) + 1
         )
       ) {
-        this.setState({
-          status: 'is-invalid',
-          tooltipOpen: true
-        });
+        this.setState(state => ({
+          ...state,
+          dates: {
+            ...state.dates,
+            status: 'is-invalid',
+            tooltipOpen: true
+          }
+        }));
       } else {
-        this.setState({
-          status: '',
-          tooltipOpen: false
-        });
+        this.setState(state => ({
+          ...state,
+          dates: {
+            ...state.dates,
+            status: '',
+            tooltipOpen: false
+          }
+        }));
       }
     } else if (
       !allowedDurations.includes(
         Number(endDate.format('DD')) - Number(startDate.format('DD')) + startMonthDayCount + 1
       )
     ) {
-      this.setState({
-        status: 'is-invalid',
-        tooltipOpen: true
-      });
+      this.setState(state => ({
+        ...state,
+        dates: {
+          ...state.dates,
+          status: 'is-invalid',
+          tooltipOpen: true
+        }
+      }));
     } else {
-      this.setState({
-        status: '',
-        tooltipOpen: false
-      });
+      this.setState(state => ({
+        ...state,
+        dates: {
+          ...state.dates,
+          status: '',
+          tooltipOpen: false
+        }
+      }));
     }
 
-    this.setState({
-      startDate: startDate.format('YYYY-MM-DD'),
-      endDate: endDate.format('YYYY-MM-DD')
-    });
+    this.setState(state => ({
+      ...state,
+      dates: {
+        ...state.dates,
+        startDate: startDate.format('YYYY-MM-DD'),
+        endDate: endDate.format('YYYY-MM-DD')
+      }
+    }));
   }
 
   render() {
-    const { startDate, endDate, status, tooltipOpen } = this.state;
+    const { dates } = this.state;
+    const { startDate, endDate, status, tooltipOpen } = dates;
 
     return (
       <>
