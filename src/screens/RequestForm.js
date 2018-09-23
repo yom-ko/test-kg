@@ -2,7 +2,16 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { Button, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  InputGroup,
+  InputGroupAddon
+} from 'reactstrap';
 
 import { history } from 'store';
 import { actions } from 'modules/app';
@@ -12,19 +21,27 @@ const RequestForm = () => (
   <>
     <h3 style={{ marginBottom: '2rem' }}>Create request</h3>
     <Form>
-      <FormGroup>
-        <Label for="price">Price</Label>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">$</InputGroupAddon>
-          <Input type="number" step="1" id="price" />
-          <InputGroupAddon addonType="append">.00</InputGroupAddon>
-        </InputGroup>
+      <FormGroup row>
+        <Label for="price" sm={2}>
+          Price
+        </Label>
+        <Col sm={10}>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">$</InputGroupAddon>
+            <Input type="number" step="1" id="price" />
+            <InputGroupAddon addonType="append">.00</InputGroupAddon>
+          </InputGroup>
+        </Col>
       </FormGroup>
-      <FormGroup>
-        <Label for="passengers">Passengers</Label>
-        <Input type="number" min="1" step="1" id="passengers" />
+      <FormGroup row>
+        <Label for="passengers" sm={2}>
+          Passengers
+        </Label>
+        <Col sm={10}>
+          <Input type="number" min="1" step="1" id="passengers" />
+        </Col>
       </FormGroup>
-      <FormGroup>
+      <FormGroup row>
         <DatePicker />
       </FormGroup>
     </Form>

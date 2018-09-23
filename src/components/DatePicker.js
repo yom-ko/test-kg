@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Label, InputGroup, InputGroupAddon, InputGroupText, Input, Tooltip } from 'reactstrap';
+import {
+  Col,
+  Label,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Input,
+  Tooltip
+} from 'reactstrap';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import Octicon, { Calendar } from '@githubprimer/octicons-react';
 
@@ -83,43 +91,47 @@ export class DatePicker extends Component {
 
     return (
       <>
-        <Label for="from_until">From / Until</Label>
-        <DateRangePicker
-          containerStyles={{
-            width: '100%'
-          }}
-          onApply={this.handleApply}
-        >
-          <InputGroup>
-            <Input
-              type="text"
-              className={status}
-              value={endDate && `${startDate} - ${endDate}`}
-              onChange={() => {}}
-              id="datepicker_input"
-            />
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText
-                style={{
-                  borderLeft: 'none',
-                  borderTopRightRadius: '4px',
-                  borderBottomRightRadius: '4px'
-                }}
+        <Label for="from_until" sm={2}>
+          From / Until
+        </Label>
+        <Col sm={10}>
+          <DateRangePicker
+            containerStyles={{
+              width: '100%'
+            }}
+            onApply={this.handleApply}
+          >
+            <InputGroup row>
+              <Input
+                type="text"
+                className={status}
+                value={endDate && `${startDate} - ${endDate}`}
+                onChange={() => {}}
+                id="datepicker_input"
+              />
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText
+                  style={{
+                    borderLeft: 'none',
+                    borderTopRightRadius: '5px',
+                    borderBottomRightRadius: '5px'
+                  }}
+                >
+                  <Octicon icon={Calendar} size="small" />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Tooltip
+                target="datepicker_input"
+                placement="bottom"
+                hideArrow
+                style={{ color: '#000', backgroundColor: '#e9ecef' }}
+                isOpen={tooltipOpen}
               >
-                <Octicon icon={Calendar} size="small" />
-              </InputGroupText>
-            </InputGroupAddon>
-            <Tooltip
-              target="datepicker_input"
-              placement="left"
-              hideArrow
-              style={{ color: '#000', backgroundColor: '#e9ecef' }}
-              isOpen={tooltipOpen}
-            >
-              Select a range of 2, 5, or 21 days (start/end inclusive)!
-            </Tooltip>
-          </InputGroup>
-        </DateRangePicker>
+                Select a range of 2, 5, or 21 days (start/end inclusive)!
+              </Tooltip>
+            </InputGroup>
+          </DateRangePicker>
+        </Col>
       </>
     );
   }
