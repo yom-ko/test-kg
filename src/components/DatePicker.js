@@ -23,13 +23,12 @@ const DatePicker = ({ startDate, endDate, status, tooltipOpen, handleApply }) =>
         }}
         onApply={handleApply}
       >
-        <InputGroup>
+        <InputGroup id="datepicker_group">
           <Input
             type="text"
             className={status}
             value={endDate && `${startDate} - ${endDate}`}
             onChange={() => {}}
-            id="datepicker_input"
           />
           <InputGroupAddon addonType="prepend">
             <InputGroupText
@@ -42,16 +41,16 @@ const DatePicker = ({ startDate, endDate, status, tooltipOpen, handleApply }) =>
               <Octicon icon={Calendar} size="small" />
             </InputGroupText>
           </InputGroupAddon>
-          <Tooltip
-            target="datepicker_input"
-            placement="bottom"
-            hideArrow
-            style={{ color: '#000', backgroundColor: '#e9ecef' }}
-            isOpen={tooltipOpen}
-          >
-            Select a range of 2, 5, or 21 days (start/end inclusive)!
-          </Tooltip>
         </InputGroup>
+        <Tooltip
+          target="datepicker_group"
+          placement="right-end"
+          hideArrow
+          style={{ color: '#000', backgroundColor: '#e9ecef' }}
+          isOpen={tooltipOpen}
+        >
+          Select a range of 2, 5, or 21 days (start/end inclusive)!
+        </Tooltip>
       </DateRangePicker>
     </Col>
   </>
