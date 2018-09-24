@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 import Octicon, { Calendar } from '@githubprimer/octicons-react';
 
-const DatePicker = ({ startDate, endDate, status, tooltipOpen, handleApply }) => (
+const DatePicker = ({ startDate, endDate, isValid, checkDates }) => (
   <>
     <Label for="from_until" sm={2} style={{ marginLeft: '2rem' }}>
       From / Until
@@ -21,13 +21,13 @@ const DatePicker = ({ startDate, endDate, status, tooltipOpen, handleApply }) =>
         containerStyles={{
           width: '100%'
         }}
-        onApply={handleApply}
+        onApply={checkDates}
       >
         <InputGroup id="datepicker_group">
           <Input
             type="text"
-            className={status}
-            value={endDate && `${startDate} - ${endDate}`}
+            className={!!endDate && !isValid ? 'is-invalid' : ''}
+            value={endDate && isValid ? `${startDate} - ${endDate}` : ''}
             onChange={() => {}}
           />
           <InputGroupAddon addonType="prepend">
@@ -47,8 +47,8 @@ const DatePicker = ({ startDate, endDate, status, tooltipOpen, handleApply }) =>
         target="datepicker_group"
         placement="right-end"
         hideArrow
-        style={{ color: '#000', backgroundColor: '#e9ecef' }}
-        isOpen={tooltipOpen}
+        style={{ color: '#000', backgroundColor: '#f7dbbf' }}
+        isOpen={!!endDate && !isValid}
       >
         Select a range of 2, 5, or 21 days (start/end inclusive)!
       </Tooltip>

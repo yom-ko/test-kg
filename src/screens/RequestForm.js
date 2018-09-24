@@ -20,18 +20,17 @@ import DatePicker from 'components/DatePicker';
 export class RequestForm extends Component {
   constructor(props) {
     super(props);
-    this.handleApply = this.handleApply.bind(this);
+    this.checkDates = this.checkDates.bind(this);
     this.state = {
       dates: {
         startDate: '',
         endDate: '',
-        status: '',
-        tooltipOpen: false
+        isValid: false
       }
     };
   }
 
-  handleApply(ev, picker) {
+  checkDates(ev, picker) {
     const { startDate, endDate } = picker;
     const allowedDurations = [2, 5, 21];
 
@@ -66,8 +65,7 @@ export class RequestForm extends Component {
           ...state,
           dates: {
             ...state.dates,
-            status: 'is-invalid',
-            tooltipOpen: true
+            isValid: false
           }
         }));
       } else {
@@ -75,8 +73,7 @@ export class RequestForm extends Component {
           ...state,
           dates: {
             ...state.dates,
-            status: '',
-            tooltipOpen: false
+            isValid: true
           }
         }));
       }
@@ -89,8 +86,7 @@ export class RequestForm extends Component {
         ...state,
         dates: {
           ...state.dates,
-          status: 'is-invalid',
-          tooltipOpen: true
+          isValid: false
         }
       }));
     } else {
@@ -98,8 +94,7 @@ export class RequestForm extends Component {
         ...state,
         dates: {
           ...state.dates,
-          status: '',
-          tooltipOpen: false
+          isValid: true
         }
       }));
     }
@@ -116,7 +111,7 @@ export class RequestForm extends Component {
 
   render() {
     const { dates } = this.state;
-    const { startDate, endDate, status, tooltipOpen } = dates;
+    const { startDate, endDate, isValid } = dates;
 
     return (
       <>
@@ -144,11 +139,10 @@ export class RequestForm extends Component {
           </FormGroup>
           <FormGroup row>
             <DatePicker
-              handleApply={this.handleApply}
+              checkDates={this.checkDates}
               startDate={startDate}
               endDate={endDate}
-              status={status}
-              tooltipOpen={tooltipOpen}
+              isValid={isValid}
             />
           </FormGroup>
         </Form>
