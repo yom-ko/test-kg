@@ -2,13 +2,24 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { Table, Button } from 'reactstrap';
+import { Table, UncontrolledTooltip, Button } from 'reactstrap';
 
 import { history } from 'store';
-import { actions } from 'modules/app.js';
+import { actions } from 'modules/app';
 import * as api from 'utils/api';
+import { getDuration } from 'utils/helpers';
 
 class RequestTable extends Component {
+  constructor(props) {
+    super(props);
+    this.updateDuration = this.updateDuration.bind(this);
+    this.removeDuration = this.removeDuration.bind(this);
+
+    this.state = {
+      currentDuration: ''
+    };
+  }
+
   componentDidMount() {
     const { requests, requestRequests } = this.props;
     const isRequestsEmpty = Object.keys(requests).length === 0 && requests.constructor === Object;
@@ -16,8 +27,29 @@ class RequestTable extends Component {
     if (isRequestsEmpty) requestRequests(api.url);
   }
 
+  updateDuration(id) {
+    const { requests } = this.props;
+
+    const requestUnderMouse = requests[id];
+    const startDate = requestUnderMouse.date_from;
+    const endDate = requestUnderMouse.date_until;
+
+    const currentDuration = getDuration(startDate, endDate);
+
+    this.setState({
+      currentDuration
+    });
+  }
+
+  removeDuration() {
+    this.setState({
+      currentDuration: ''
+    });
+  }
+
   render() {
     const { requests } = this.props;
+    const { currentDuration } = this.state;
     const requestsAr = Object.entries(requests);
 
     const requestRows = requestsAr.map(request => {
@@ -38,10 +70,25 @@ class RequestTable extends Component {
             {currency === 'USD' ? '$' : '€'}
           </td>
           <td>{id}</td>
-          <td>
-            {dateFrom}
-            {' - '}
-            {dateUntil}
+          <td
+            onMouseOver={() => this.updateDuration(id)}
+            onFocus={() => this.updateDuration(id)}
+            onMouseOut={this.removeDuration}
+            onBlur={this.removeDuration}
+          >
+            <span id={`cell_${id}`}>
+              {dateFrom}
+              {' - '}
+              {dateUntil}
+            </span>
+            <UncontrolledTooltip
+              target={`cell_${id}`}
+              placement="right"
+              hideArrow
+              style={{ color: '#000', backgroundColor: '#f7dbbf' }}
+            >
+              {!!currentDuration && `Duration: ${currentDuration} days` }
+            </UncontrolledTooltip>
           </td>
           <td>{passengers}</td>
         </tr>

@@ -4,18 +4,23 @@ import { connect } from 'react-redux';
 
 import {
   Col,
-  Button,
   Form,
   FormGroup,
   Label,
   Input,
   InputGroup,
   InputGroupAddon,
-  Tooltip
+  InputGroupButtonDropdown,
+  Button,
+  Tooltip,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 
 import { history } from 'store';
 import { actions } from 'modules/app';
+import { getDuration } from 'utils/helpers';
 import DatePicker from 'components/DatePicker';
 
 export class RequestForm extends Component {
@@ -24,6 +29,8 @@ export class RequestForm extends Component {
     this.checkAndSubmit = this.checkAndSubmit.bind(this);
     this.changePrice = this.changePrice.bind(this);
     this.checkPrice = this.checkPrice.bind(this);
+    this.toggleCurrencyList = this.toggleCurrencyList.bind(this);
+    this.changeCurrency = this.changeCurrency.bind(this);
     this.changePassengers = this.changePassengers.bind(this);
     this.checkPassengers = this.checkPassengers.bind(this);
     this.checkDates = this.checkDates.bind(this);
@@ -40,7 +47,9 @@ export class RequestForm extends Component {
     this.state = {
       price: {
         priceValue: 10,
-        isPriceValid: true
+        isPriceValid: true,
+        currency: 'USD',
+        isCurrencyListOpen: false
       },
       passengers: {
         passengerCount: 1,
@@ -65,7 +74,7 @@ export class RequestForm extends Component {
     }
 
     const { addRequest } = this.props;
-    const { priceValue } = price;
+    const { priceValue, currency } = price;
     const { passengerCount } = passengers;
     const { startDate, endDate } = dates;
 
@@ -74,7 +83,7 @@ export class RequestForm extends Component {
       dateUntil: endDate,
       passengers: passengerCount,
       price: priceValue,
-      currency: 'USD'
+      currency
     };
 
     addRequest(newRequest);
@@ -117,6 +126,28 @@ export class RequestForm extends Component {
     }
   }
 
+  toggleCurrencyList() {
+    this.setState(state => ({
+      ...state,
+      price: {
+        ...state.price,
+        isCurrencyListOpen: !state.price.isCurrencyListOpen
+      }
+    }));
+  }
+
+  changeCurrency(e) {
+    const currentCurrency = String(e.target.value);
+
+    this.setState(state => ({
+      ...state,
+      price: {
+        ...state.price,
+        currency: currentCurrency
+      }
+    }));
+  }
+
   changePassengers(e) {
     const currentCount = Number(e.target.value);
 
@@ -156,54 +187,25 @@ export class RequestForm extends Component {
     const { startDate, endDate } = picker;
     const allowedDurations = [2, 5, 21];
 
-    function IsLeapYear(year) {
-      return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-    }
+    const startDateString = startDate.format('YYYY-MM-DD');
+    const endDateString = endDate.format('YYYY-MM-DD');
 
-    const months = {
-      1: { name: 'Jan', dayCount: 31 },
-      2: { name: 'Feb', dayCount: IsLeapYear(Number(startDate.format('YYYY'))) ? 29 : 28 },
-      3: { name: 'Mar', dayCount: 31 },
-      4: { name: 'Apr', dayCount: 30 },
-      5: { name: 'May', dayCount: 31 },
-      6: { name: 'Jun', dayCount: 30 },
-      7: { name: 'Jul', dayCount: 31 },
-      8: { name: 'Aug', dayCount: 31 },
-      9: { name: 'Sep', dayCount: 30 },
-      10: { name: 'Oct', dayCount: 31 },
-      11: { name: 'Nov', dayCount: 30 },
-      12: { name: 'Dec', dayCount: 31 }
-    };
+    const duration = getDuration(startDateString, endDateString);
 
-    const startDateNumber = Number(startDate.format('DD'));
-    const endDateNumber = Number(endDate.format('DD'));
-
-    const startMonthNumber = Number(startDate.format('MM'));
-    const endMonthNumber = Number(endDate.format('MM'));
-
-    const startMonthDayCount = months[startMonthNumber].dayCount;
-
-    const isSameMonth = endMonthNumber === startMonthNumber;
-
-    if (
-      !allowedDurations.includes(
-        endDateNumber - startDateNumber + 1 + (!isSameMonth && startMonthDayCount)
-      )
-    ) {
+    if (allowedDurations.includes(duration)) {
       this.setState(state => ({
         ...state,
         dates: {
           ...state.dates,
-          isDatesValid: false
+          isDatesValid: true
         }
       }));
     } else {
       this.setState(state => ({
         ...state,
         dates: {
-          startDate: startDate.format('YYYY-MM-DD'),
-          endDate: endDate.format('YYYY-MM-DD'),
-          isDatesValid: true
+          ...state.dates,
+          isDatesValid: false
         }
       }));
     }
@@ -220,7 +222,7 @@ export class RequestForm extends Component {
 
   render() {
     const { price, passengers, dates } = this.state;
-    const { priceValue, isPriceValid } = price;
+    const { priceValue, isPriceValid, currency, isCurrencyListOpen } = price;
     const { passengerCount, isPassengersValid } = passengers;
     const { startDate, endDate, isDatesValid } = dates;
 
@@ -234,7 +236,26 @@ export class RequestForm extends Component {
             </Label>
             <Col sm={5}>
               <InputGroup id="price_group">
-                <InputGroupAddon addonType="prepend">$</InputGroupAddon>
+                <InputGroupButtonDropdown
+                  addonType="prepend"
+                  isOpen={isCurrencyListOpen}
+                  toggle={this.toggleCurrencyList}
+                >
+                  <DropdownToggle
+                    style={{ color: '#495057', backgroundColor: '#e9ecef', borderColor: '#ced4da' }}
+                    caret
+                  >
+                    {currency === 'USD' ? '$' : '€'}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem value="USD" onClick={this.changeCurrency}>
+                      $
+                    </DropdownItem>
+                    <DropdownItem value="EUR" onClick={this.changeCurrency}>
+                      €
+                    </DropdownItem>
+                  </DropdownMenu>
+                </InputGroupButtonDropdown>
                 {/* eslint-disable-next-line max-len */}
                 {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but we omit them in favour of manual checks as per the spec. */}
                 <Input
@@ -304,6 +325,7 @@ export class RequestForm extends Component {
             float: 'right'
           }}
           onClick={this.checkAndSubmit}
+          disabled={!isPriceValid || !isPassengersValid || !isDatesValid}
         >
           Create
         </Button>

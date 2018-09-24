@@ -3,10 +3,10 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import {
   Col,
   Label,
+  Input,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Input,
   Tooltip
 } from 'reactstrap';
 import Octicon, { Calendar } from '@githubprimer/octicons-react';
@@ -30,14 +30,8 @@ const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
             value={`${startDate} - ${endDate}`}
             onChange={() => {}}
           />
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText
-              style={{
-                borderLeft: 'none',
-                borderTopRightRadius: '5px',
-                borderBottomRightRadius: '5px'
-              }}
-            >
+          <InputGroupAddon addonType="append">
+            <InputGroupText>
               <Octicon icon={Calendar} size="small" />
             </InputGroupText>
           </InputGroupAddon>
