@@ -10,7 +10,8 @@ import {
   Label,
   Input,
   InputGroup,
-  InputGroupAddon
+  InputGroupAddon,
+  Tooltip
 } from 'reactstrap';
 
 import { history } from 'store';
@@ -21,13 +22,64 @@ export class RequestForm extends Component {
   constructor(props) {
     super(props);
     this.checkDates = this.checkDates.bind(this);
+    this.changePassengers = this.changePassengers.bind(this);
+    this.checkPassengers = this.checkPassengers.bind(this);
+
+    // Prepare sensible defaults for the form's dates field
+    this.today = new Date();
+    this.tomorrow = new Date(this.today.getTime() + 24 * 60 * 60 * 1000);
+    this.defaultStartDate = `${this.today.getFullYear()}-${`0${this.today.getMonth() + 1}`.slice(
+      -2
+    )}-${this.today.getDate()}`;
+    this.defaultEndDate = `${this.tomorrow.getFullYear()}-${`0${this.tomorrow.getMonth()
+      + 1}`.slice(-2)}-${this.tomorrow.getDate()}`;
+
     this.state = {
+      passengers: {
+        passengerCount: 1,
+        isPassengersValid: true
+      },
       dates: {
-        startDate: '',
-        endDate: '',
-        isValid: false
+        startDate: this.defaultStartDate,
+        endDate: this.defaultEndDate,
+        isDatesValid: true
       }
     };
+  }
+
+  changePassengers(e) {
+    const currentCount = Number(e.target.value);
+
+    this.setState(state => ({
+      ...state,
+      passengers: {
+        ...state.passengers,
+        passengerCount: currentCount
+      }
+    }));
+  }
+
+  checkPassengers() {
+    const { passengers } = this.state;
+    const { passengerCount } = passengers;
+
+    if (typeof passengerCount !== 'number' || passengerCount < 1 || passengerCount > 9) {
+      this.setState(state => ({
+        ...state,
+        passengers: {
+          ...state.passengers,
+          isPassengersValid: false
+        }
+      }));
+    } else {
+      this.setState(state => ({
+        ...state,
+        passengers: {
+          ...state.passengers,
+          isPassengersValid: true
+        }
+      }));
+    }
   }
 
   checkDates(ev, picker) {
@@ -53,48 +105,35 @@ export class RequestForm extends Component {
       12: { name: 'Dec', dayCount: 31 }
     };
 
-    const startMonthDayCount = months[Number(startDate.format('MM'))].dayCount;
+    const startDateNumber = Number(startDate.format('DD'));
+    const endDateNumber = Number(endDate.format('DD'));
 
-    if (Number(endDate.format('MM')) === Number(startDate.format('MM'))) {
-      if (
-        !allowedDurations.includes(
-          Number(endDate.format('DD')) - Number(startDate.format('DD')) + 1
-        )
-      ) {
-        this.setState(state => ({
-          ...state,
-          dates: {
-            ...state.dates,
-            isValid: false
-          }
-        }));
-      } else {
-        this.setState(state => ({
-          ...state,
-          dates: {
-            ...state.dates,
-            isValid: true
-          }
-        }));
-      }
-    } else if (
+    const startMonthNumber = Number(startDate.format('MM'));
+    const endMonthNumber = Number(endDate.format('MM'));
+
+    const startMonthDayCount = months[startMonthNumber].dayCount;
+
+    const isSameMonth = endMonthNumber === startMonthNumber;
+
+    if (
       !allowedDurations.includes(
-        Number(endDate.format('DD')) - Number(startDate.format('DD')) + startMonthDayCount + 1
+        endDateNumber - startDateNumber + 1 + (!isSameMonth && startMonthDayCount)
       )
     ) {
       this.setState(state => ({
         ...state,
         dates: {
           ...state.dates,
-          isValid: false
+          isDatesValid: false
         }
       }));
     } else {
       this.setState(state => ({
         ...state,
         dates: {
-          ...state.dates,
-          isValid: true
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD'),
+          isDatesValid: true
         }
       }));
     }
@@ -110,8 +149,9 @@ export class RequestForm extends Component {
   }
 
   render() {
-    const { dates } = this.state;
-    const { startDate, endDate, isValid } = dates;
+    const { passengers, dates } = this.state;
+    const { startDate, endDate, isDatesValid } = dates;
+    const { passengerCount, isPassengersValid } = passengers;
 
     return (
       <>
@@ -134,15 +174,32 @@ export class RequestForm extends Component {
               Passengers
             </Label>
             <Col sm={5}>
-              <Input type="number" min="1" step="1" id="passengers" />
+              <Input
+                type="number"
+                min="1"
+                step="1"
+                id="passengers"
+                onChange={this.changePassengers}
+                onMouseLeave={this.checkPassengers}
+                value={passengerCount}
+              />
+              <Tooltip
+                target="passengers"
+                placement="right-end"
+                hideArrow
+                style={{ color: '#000', backgroundColor: '#f7dbbf' }}
+                isOpen={!isPassengersValid}
+              >
+                Enter a number from 1 to 9 (both inclusive)!
+              </Tooltip>
             </Col>
           </FormGroup>
           <FormGroup row>
             <DatePicker
-              checkDates={this.checkDates}
               startDate={startDate}
               endDate={endDate}
-              isValid={isValid}
+              isDatesValid={isDatesValid}
+              checkDates={this.checkDates}
             />
           </FormGroup>
         </Form>
