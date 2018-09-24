@@ -27,7 +27,7 @@ const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
           <Input
             type="text"
             className={isDatesValid ? '' : 'is-invalid'}
-            value={isDatesValid ? `${startDate} - ${endDate}` : ''}
+            value={`${startDate} - ${endDate}`}
             onChange={() => {}}
           />
           <InputGroupAddon addonType="prepend">

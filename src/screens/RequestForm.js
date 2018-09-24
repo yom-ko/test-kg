@@ -21,6 +21,7 @@ import DatePicker from 'components/DatePicker';
 export class RequestForm extends Component {
   constructor(props) {
     super(props);
+    this.checkAndSubmit = this.checkAndSubmit.bind(this);
     this.changePrice = this.changePrice.bind(this);
     this.checkPrice = this.checkPrice.bind(this);
     this.changePassengers = this.changePassengers.bind(this);
@@ -51,6 +52,34 @@ export class RequestForm extends Component {
         isDatesValid: true
       }
     };
+  }
+
+  checkAndSubmit() {
+    const { price, passengers, dates } = this.state;
+    const { isPriceValid } = price;
+    const { isPassengersValid } = passengers;
+    const { isDatesValid } = dates;
+
+    if (!isPriceValid || !isPassengersValid || !isDatesValid) {
+      return;
+    }
+
+    const { addRequest } = this.props;
+    const { priceValue } = price;
+    const { passengerCount } = passengers;
+    const { startDate, endDate } = dates;
+
+    const newRequest = {
+      dateFrom: startDate,
+      dateUntil: endDate,
+      passengers: passengerCount,
+      price: priceValue,
+      currency: 'USD'
+    };
+
+    addRequest(newRequest);
+
+    history.push('/');
   }
 
   changePrice(e) {
@@ -274,7 +303,7 @@ export class RequestForm extends Component {
             margin: '2rem 0 0 auto',
             float: 'right'
           }}
-          onClick={() => history.push('/')}
+          onClick={this.checkAndSubmit}
         >
           Create
         </Button>

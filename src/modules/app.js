@@ -30,7 +30,7 @@ export const actions = {
     return {
       type: actions.REQUEST_ADD,
       payload: {
-        id: `req-0000${actions.nextId + 1}`,
+        id: `req-0000${(actions.nextId += 1)}`,
         dateFrom,
         dateUntil,
         passengers,

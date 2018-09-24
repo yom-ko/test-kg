@@ -10,8 +10,10 @@ import * as api from 'utils/api';
 
 class RequestTable extends Component {
   componentDidMount() {
-    const { requestRequests } = this.props;
-    requestRequests(api.url);
+    const { requests, requestRequests } = this.props;
+    const isRequestsEmpty = Object.keys(requests).length === 0 && requests.constructor === Object;
+
+    if (isRequestsEmpty) requestRequests(api.url);
   }
 
   render() {
