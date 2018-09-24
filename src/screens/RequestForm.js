@@ -21,9 +21,11 @@ import DatePicker from 'components/DatePicker';
 export class RequestForm extends Component {
   constructor(props) {
     super(props);
-    this.checkDates = this.checkDates.bind(this);
+    this.changePrice = this.changePrice.bind(this);
+    this.checkPrice = this.checkPrice.bind(this);
     this.changePassengers = this.changePassengers.bind(this);
     this.checkPassengers = this.checkPassengers.bind(this);
+    this.checkDates = this.checkDates.bind(this);
 
     // Prepare sensible defaults for the form's dates field
     this.today = new Date();
@@ -35,6 +37,10 @@ export class RequestForm extends Component {
       + 1}`.slice(-2)}-${this.tomorrow.getDate()}`;
 
     this.state = {
+      price: {
+        priceValue: 10,
+        isPriceValid: true
+      },
       passengers: {
         passengerCount: 1,
         isPassengersValid: true
@@ -45,6 +51,41 @@ export class RequestForm extends Component {
         isDatesValid: true
       }
     };
+  }
+
+  changePrice(e) {
+    const currentPrice = Number(e.target.value);
+
+    this.setState(state => ({
+      ...state,
+      price: {
+        ...state.price,
+        priceValue: currentPrice
+      }
+    }));
+  }
+
+  checkPrice() {
+    const { price } = this.state;
+    const { priceValue } = price;
+
+    if (typeof priceValue !== 'number' || priceValue < 10 || priceValue > 250) {
+      this.setState(state => ({
+        ...state,
+        price: {
+          ...state.price,
+          isPriceValid: false
+        }
+      }));
+    } else {
+      this.setState(state => ({
+        ...state,
+        price: {
+          ...state.price,
+          isPriceValid: true
+        }
+      }));
+    }
   }
 
   changePassengers(e) {
@@ -149,9 +190,10 @@ export class RequestForm extends Component {
   }
 
   render() {
-    const { passengers, dates } = this.state;
-    const { startDate, endDate, isDatesValid } = dates;
+    const { price, passengers, dates } = this.state;
+    const { priceValue, isPriceValid } = price;
     const { passengerCount, isPassengersValid } = passengers;
+    const { startDate, endDate, isDatesValid } = dates;
 
     return (
       <>
@@ -162,11 +204,30 @@ export class RequestForm extends Component {
               Price
             </Label>
             <Col sm={5}>
-              <InputGroup>
+              <InputGroup id="price_group">
                 <InputGroupAddon addonType="prepend">$</InputGroupAddon>
-                <Input type="number" step="1" id="price" />
+                {/* eslint-disable-next-line max-len */}
+                {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but we omit them in favour of manual checks as per the spec. */}
+                <Input
+                  type="number"
+                  step="1"
+                  id="price"
+                  className={isPriceValid ? '' : 'is-invalid'}
+                  value={priceValue}
+                  onChange={this.changePrice}
+                  onMouseLeave={this.checkPrice}
+                />
                 <InputGroupAddon addonType="append">.00</InputGroupAddon>
               </InputGroup>
+              <Tooltip
+                target="price_group"
+                placement="right"
+                hideArrow
+                style={{ color: '#000', backgroundColor: '#f7dbbf' }}
+                isOpen={!isPriceValid}
+              >
+                Enter a number in the range from 10 to 250 !
+              </Tooltip>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -174,23 +235,25 @@ export class RequestForm extends Component {
               Passengers
             </Label>
             <Col sm={5}>
+              {/* eslint-disable-next-line max-len */}
+              {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but we omit them in favour of manual checks as per the spec. */}
               <Input
                 type="number"
-                min="1"
                 step="1"
                 id="passengers"
+                className={isPassengersValid ? '' : 'is-invalid'}
+                value={passengerCount}
                 onChange={this.changePassengers}
                 onMouseLeave={this.checkPassengers}
-                value={passengerCount}
               />
               <Tooltip
                 target="passengers"
-                placement="right-end"
+                placement="right"
                 hideArrow
                 style={{ color: '#000', backgroundColor: '#f7dbbf' }}
                 isOpen={!isPassengersValid}
               >
-                Enter a number from 1 to 9 (both inclusive)!
+                Enter a number in the range from 1 to 9 !
               </Tooltip>
             </Col>
           </FormGroup>

@@ -26,7 +26,7 @@ const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
         <InputGroup id="datepicker_group">
           <Input
             type="text"
-            className={!isDatesValid ? 'is-invalid' : ''}
+            className={isDatesValid ? '' : 'is-invalid'}
             value={isDatesValid ? `${startDate} - ${endDate}` : ''}
             onChange={() => {}}
           />
@@ -45,7 +45,7 @@ const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
       </DateRangePicker>
       <Tooltip
         target="datepicker_group"
-        placement="right-end"
+        placement="right"
         hideArrow
         style={{ color: '#000', backgroundColor: '#f7dbbf' }}
         isOpen={!isDatesValid}
