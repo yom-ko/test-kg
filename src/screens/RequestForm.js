@@ -8,7 +8,6 @@ import {
   Label,
   Input,
   InputGroup,
-  InputGroupAddon,
   InputGroupButtonDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -30,6 +29,8 @@ export class RequestForm extends Component {
     this.checkPrice = this.checkPrice.bind(this);
     this.toggleCurrencyList = this.toggleCurrencyList.bind(this);
     this.changeCurrency = this.changeCurrency.bind(this);
+    this.toggleDecimalList = this.toggleDecimalList.bind(this);
+    this.changeDecimal = this.changeDecimal.bind(this);
     this.changePassengers = this.changePassengers.bind(this);
     this.checkPassengers = this.checkPassengers.bind(this);
     this.checkDates = this.checkDates.bind(this);
@@ -45,10 +46,12 @@ export class RequestForm extends Component {
 
     this.state = {
       price: {
+        currency: 'USD',
+        isCurrencyListOpen: false,
         priceValue: 10,
         isPriceValid: true,
-        currency: 'USD',
-        isCurrencyListOpen: false
+        priceDecimal: '.00',
+        isDecimalListOpen: false
       },
       passengers: {
         passengerCount: 1,
@@ -73,15 +76,17 @@ export class RequestForm extends Component {
     }
 
     const { addRequest } = this.props;
-    const { priceValue, currency } = price;
+    const { priceValue, currency, priceDecimal } = price;
     const { passengerCount } = passengers;
     const { startDate, endDate } = dates;
+
+    const totalPrice = priceValue + Number.parseFloat(priceDecimal);
 
     const newRequest = {
       dateFrom: startDate,
       dateUntil: endDate,
       passengers: passengerCount,
-      price: priceValue,
+      price: totalPrice,
       currency
     };
 
@@ -143,6 +148,32 @@ export class RequestForm extends Component {
       price: {
         ...state.price,
         currency: currentCurrency
+      }
+    }));
+  }
+
+  toggleDecimalList() {
+    this.setState(state => ({
+      ...state,
+      price: {
+        ...state.price,
+        isDecimalListOpen: !state.price.isDecimalListOpen
+      }
+    }));
+  }
+
+  changeDecimal(e) {
+    if (!e.target.className === 'dropdown-item') {
+      return;
+    }
+
+    const currentDecimal = String(e.target.value);
+
+    this.setState(state => ({
+      ...state,
+      price: {
+        ...state.price,
+        priceDecimal: currentDecimal
       }
     }));
   }
@@ -221,16 +252,23 @@ export class RequestForm extends Component {
 
   render() {
     const { price, passengers, dates } = this.state;
-    const { priceValue, isPriceValid, currency, isCurrencyListOpen } = price;
+    const {
+      priceValue,
+      isPriceValid,
+      currency,
+      isCurrencyListOpen,
+      priceDecimal,
+      isDecimalListOpen
+    } = price;
     const { passengerCount, isPassengersValid } = passengers;
     const { startDate, endDate, isDatesValid } = dates;
 
     return (
       <>
-        <h3 style={{ marginBottom: '2rem' }}>Create request</h3>
+        <h3 style={{ marginBottom: '2.5rem' }}>Create request</h3>
         <Form>
-          <FormGroup row style={{ marginBottom: '5.5rem' }}>
-            <Label for="price" sm={2} style={{ marginLeft: '2rem' }}>
+          <FormGroup row style={{ marginBottom: '2rem' }}>
+            <Label for="price" sm={2} style={{ marginLeft: '2.5rem' }}>
               Price
             </Label>
             <Col sm={5}>
@@ -266,7 +304,30 @@ export class RequestForm extends Component {
                   onChange={this.changePrice}
                   onMouseLeave={this.checkPrice}
                 />
-                <InputGroupAddon addonType="append">.00</InputGroupAddon>
+                <InputGroupButtonDropdown
+                  addonType="append"
+                  isOpen={isDecimalListOpen}
+                  toggle={this.toggleDecimalList}
+                >
+                  <DropdownToggle
+                    style={{ color: '#495057', backgroundColor: '#e9ecef', borderColor: '#ced4da' }}
+                    caret
+                  >
+                    {priceDecimal}
+                  </DropdownToggle>
+                  <DropdownMenu style={{ minWidth: '1.5rem' }} onClick={this.changeDecimal}>
+                    <DropdownItem value=".00">.00</DropdownItem>
+                    <DropdownItem value=".10">.10</DropdownItem>
+                    <DropdownItem value=".20">.20</DropdownItem>
+                    <DropdownItem value=".30">.30</DropdownItem>
+                    <DropdownItem value=".40">.40</DropdownItem>
+                    <DropdownItem value=".50">.50</DropdownItem>
+                    <DropdownItem value=".60">.60</DropdownItem>
+                    <DropdownItem value=".70">.70</DropdownItem>
+                    <DropdownItem value=".80">.80</DropdownItem>
+                    <DropdownItem value=".90">.90</DropdownItem>
+                  </DropdownMenu>
+                </InputGroupButtonDropdown>
               </InputGroup>
               <Tooltip
                 target="price_group"
@@ -279,8 +340,8 @@ export class RequestForm extends Component {
               </Tooltip>
             </Col>
           </FormGroup>
-          <FormGroup row>
-            <Label for="passengers" sm={2} style={{ marginLeft: '2rem' }}>
+          <FormGroup row style={{ marginBottom: '2rem' }}>
+            <Label for="passengers" sm={2} style={{ marginLeft: '2.5rem' }}>
               Passengers
             </Label>
             <Col sm={5}>

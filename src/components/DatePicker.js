@@ -13,7 +13,7 @@ import {
 
 const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
   <>
-    <Label for="from_until" sm={2} style={{ marginLeft: '2rem' }}>
+    <Label for="from_until" sm={2} style={{ marginLeft: '2.5rem' }}>
       From / Until
     </Label>
     <Col sm={5}>
