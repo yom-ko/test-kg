@@ -1,4 +1,3 @@
-// import { delay } from 'redux-saga';
 import { put, takeEvery, fork, all, call } from 'redux-saga/effects';
 import { actions } from 'modules/app';
 import * as api from 'utils/api';

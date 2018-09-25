@@ -20,6 +20,8 @@ class RequestTable extends Component {
     };
   }
 
+  // If there is no data in Redux Store to display so far,
+  // fetch data from API to populate the Store.
   componentDidMount() {
     const { requests, requestRequests } = this.props;
     const isRequestsEmpty = Object.keys(requests).length === 0 && requests.constructor === Object;
@@ -27,31 +29,37 @@ class RequestTable extends Component {
     if (isRequestsEmpty) requestRequests(api.url);
   }
 
+  // Calculate and capture the duration of the hovered date range
   setDuration(id) {
     const { requests } = this.props;
 
-    const requestUnderMouse = requests[id];
-    const startDate = requestUnderMouse.date_from;
-    const endDate = requestUnderMouse.date_until;
+    const hoveredRequest = requests[id];
+    const startDate = hoveredRequest.date_from;
+    const endDate = hoveredRequest.date_until;
 
     this.setState({
       currentDuration: getDuration(startDate, endDate)
     });
   }
 
+  // Clear the previously captured duration
   removeDuration() {
     this.setState({
       currentDuration: ''
     });
   }
 
+  // Render view
   render() {
     const { requests } = this.props;
     const { currentDuration } = this.state;
 
+    // Turn the object into an array
     const requestsAr = Object.entries(requests);
 
+    // Prepare data rows for the table
     const requestRows = requestsAr.map(request => {
+      // Get required data from the single request object
       const {
         id,
         date_from: dateFrom,
@@ -87,6 +95,7 @@ class RequestTable extends Component {
             hideArrow
             style={{ color: '#000', backgroundColor: '#fff2b5' }}
           >
+            {/* Dynamic tooltip text */}
             {currentDuration && `Duration: ${currentDuration} days`}
           </UncontrolledTooltip>
           <td>{passengers}</td>

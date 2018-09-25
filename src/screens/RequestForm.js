@@ -21,7 +21,7 @@ import { actions } from 'modules/app';
 import { getDuration } from 'utils/helpers';
 import DatePicker from 'components/DatePicker';
 
-export class RequestForm extends Component {
+class RequestForm extends Component {
   constructor(props) {
     super(props);
     this.checkAndSubmit = this.checkAndSubmit.bind(this);
@@ -65,33 +65,39 @@ export class RequestForm extends Component {
     };
   }
 
+  // Submit the form data if all correct
   checkAndSubmit() {
     const { price, passengers, dates } = this.state;
     const { isPriceValid } = price;
     const { isPassengersValid } = passengers;
     const { isDatesValid } = dates;
 
+    // If at least one field was not filled correctly, just do nothing.
     if (!isPriceValid || !isPassengersValid || !isDatesValid) {
       return;
     }
 
+    // Otherwise, create a new request object
+    // containing data entered by the user...
     const { addRequest } = this.props;
-    const { priceValue, currency, priceDecimal } = price;
+    const { priceValue, priceDecimal, currency } = price;
     const { passengerCount } = passengers;
     const { startDate, endDate } = dates;
 
-    const totalPrice = priceValue + Number.parseFloat(priceDecimal);
+    const finalPrice = priceValue + Number.parseFloat(priceDecimal);
 
     const newRequest = {
       dateFrom: startDate,
       dateUntil: endDate,
       passengers: passengerCount,
-      price: totalPrice,
+      price: finalPrice,
       currency
     };
 
+    // ... and send it to the Store.
     addRequest(newRequest);
 
+    // Once the request has been sent, take the user to Home page
     history.push('/');
   }
 
@@ -141,7 +147,11 @@ export class RequestForm extends Component {
   }
 
   changeCurrency(e) {
-    const currentCurrency = String(e.target.value);
+    if (!e.target.className === 'dropdown-item') {
+      return;
+    }
+
+    const currentCurrency = e.target.value;
 
     this.setState(state => ({
       ...state,
@@ -167,7 +177,7 @@ export class RequestForm extends Component {
       return;
     }
 
-    const currentDecimal = String(e.target.value);
+    const currentDecimal = e.target.textContent.trim();
 
     this.setState(state => ({
       ...state,
@@ -222,6 +232,8 @@ export class RequestForm extends Component {
 
     const duration = getDuration(startDateString, endDateString);
 
+    // Check if the just selected range duration belongs to the allowed ones
+    // and update the `dates` substate accordingly.
     if (allowedDurations.includes(duration)) {
       this.setState(state => ({
         ...state,
@@ -250,6 +262,7 @@ export class RequestForm extends Component {
     }));
   }
 
+  // render view
   render() {
     const { price, passengers, dates } = this.state;
     const {
@@ -284,17 +297,18 @@ export class RequestForm extends Component {
                   >
                     {currency === 'USD' ? '$' : '€'}
                   </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem value="USD" onClick={this.changeCurrency}>
+                  {/* Use event delegation to capture the selected item value */}
+                  <DropdownMenu style={{ minWidth: '1.5rem' }} onClick={this.changeCurrency}>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }} value="USD">
                       $
                     </DropdownItem>
-                    <DropdownItem value="EUR" onClick={this.changeCurrency}>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }} value="EUR">
                       €
                     </DropdownItem>
                   </DropdownMenu>
                 </InputGroupButtonDropdown>
                 {/* eslint-disable-next-line max-len */}
-                {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but I omit them in favour of manual checks as per the spec. */}
+                {/* It would make sense to set hard limits on the min/max values using corresponding <input> attributes, but I omit them in favour of manual checks as per the spec. */}
                 <Input
                   type="number"
                   step="1"
@@ -315,17 +329,18 @@ export class RequestForm extends Component {
                   >
                     {priceDecimal}
                   </DropdownToggle>
+                  {/* Use event delegation to capture the selected item value */}
                   <DropdownMenu style={{ minWidth: '1.5rem' }} onClick={this.changeDecimal}>
-                    <DropdownItem value=".00">.00</DropdownItem>
-                    <DropdownItem value=".10">.10</DropdownItem>
-                    <DropdownItem value=".20">.20</DropdownItem>
-                    <DropdownItem value=".30">.30</DropdownItem>
-                    <DropdownItem value=".40">.40</DropdownItem>
-                    <DropdownItem value=".50">.50</DropdownItem>
-                    <DropdownItem value=".60">.60</DropdownItem>
-                    <DropdownItem value=".70">.70</DropdownItem>
-                    <DropdownItem value=".80">.80</DropdownItem>
-                    <DropdownItem value=".90">.90</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.00</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.10</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.20</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.30</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.40</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.50</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.60</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.70</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.80</DropdownItem>
+                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.90</DropdownItem>
                   </DropdownMenu>
                 </InputGroupButtonDropdown>
               </InputGroup>
@@ -346,7 +361,7 @@ export class RequestForm extends Component {
             </Label>
             <Col sm={5}>
               {/* eslint-disable-next-line max-len */}
-              {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but I omit them in favour of manual checks as per the spec. */}
+              {/* It would make sense to set hard limits on the min/max values using corresponding <input> attributes, but I omit them in favour of manual checks as per the spec. */}
               <Input
                 type="number"
                 step="1"
@@ -385,6 +400,7 @@ export class RequestForm extends Component {
             float: 'right'
           }}
           onClick={this.checkAndSubmit}
+          // Disable the Create button if at least one field is invalid
           disabled={!isPriceValid || !isPassengersValid || !isDatesValid}
         >
           Create
