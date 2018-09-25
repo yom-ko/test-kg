@@ -28,12 +28,9 @@ export function getDuration(startDate, endDate) {
   const startDateNumber = Number(startDay);
   const endDateNumber = Number(endDay);
 
-  const startMonthNumber = Number(startMonth);
-  const endMonthNumber = Number(endMonth);
-
   const startMonthDayCount = months[startMonth].dayCount;
 
-  const isSameMonth = endMonthNumber === startMonthNumber;
+  const isSameMonth = startMonth === endMonth;
 
   return endDateNumber - startDateNumber + 1 + (!isSameMonth && startMonthDayCount);
 }

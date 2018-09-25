@@ -6,13 +6,13 @@ import { Table, UncontrolledTooltip, Button } from 'reactstrap';
 
 import { history } from 'store';
 import { actions } from 'modules/app';
-import * as api from 'utils/api';
 import { getDuration } from 'utils/helpers';
+import * as api from 'utils/api';
 
 class RequestTable extends Component {
   constructor(props) {
     super(props);
-    this.updateDuration = this.updateDuration.bind(this);
+    this.setDuration = this.setDuration.bind(this);
     this.removeDuration = this.removeDuration.bind(this);
 
     this.state = {
@@ -27,17 +27,15 @@ class RequestTable extends Component {
     if (isRequestsEmpty) requestRequests(api.url);
   }
 
-  updateDuration(id) {
+  setDuration(id) {
     const { requests } = this.props;
 
     const requestUnderMouse = requests[id];
     const startDate = requestUnderMouse.date_from;
     const endDate = requestUnderMouse.date_until;
 
-    const currentDuration = getDuration(startDate, endDate);
-
     this.setState({
-      currentDuration
+      currentDuration: getDuration(startDate, endDate)
     });
   }
 
@@ -50,15 +48,16 @@ class RequestTable extends Component {
   render() {
     const { requests } = this.props;
     const { currentDuration } = this.state;
+
     const requestsAr = Object.entries(requests);
 
     const requestRows = requestsAr.map(request => {
       const {
-        price,
         id,
         date_from: dateFrom,
         date_until: dateUntil,
         passengers,
+        price,
         currency
       } = request[1];
 
@@ -71,25 +70,25 @@ class RequestTable extends Component {
           </td>
           <td>{id}</td>
           <td
-            onMouseOver={() => this.updateDuration(id)}
-            onFocus={() => this.updateDuration(id)}
+            onMouseOver={() => this.setDuration(id)}
+            onFocus={() => this.setDuration(id)}
             onMouseOut={this.removeDuration}
             onBlur={this.removeDuration}
           >
-            <span id={`cell_${id}`}>
+            <span id={`span_${id}`}>
               {dateFrom}
               {' - '}
               {dateUntil}
             </span>
-            <UncontrolledTooltip
-              target={`cell_${id}`}
-              placement="right"
-              hideArrow
-              style={{ color: '#000', backgroundColor: '#f7dbbf' }}
-            >
-              {!!currentDuration && `Duration: ${currentDuration} days` }
-            </UncontrolledTooltip>
           </td>
+          <UncontrolledTooltip
+            target={`span_${id}`}
+            placement="right"
+            hideArrow
+            style={{ color: '#000', backgroundColor: '#fff2b5' }}
+          >
+            {currentDuration && `Duration: ${currentDuration} days`}
+          </UncontrolledTooltip>
           <td>{passengers}</td>
         </tr>
       );
@@ -100,21 +99,23 @@ class RequestTable extends Component {
         <h3>Requests</h3>
         <Button
           style={{
-            backgroundColor: '#58B957',
-            borderColor: '#58B957',
+            backgroundColor: '#58b957',
+            borderColor: '#58b957',
             marginTop: '2.8rem',
+            marginBottom: '2.8rem',
             padding: '0.450rem 1.8rem'
           }}
           onClick={() => history.push('/form')}
         >
           Add new
         </Button>
-        <Table borderless style={{ marginTop: '2.4rem' }}>
+        <Table borderless>
           <thead
             style={{
               backgroundColor: '#ccc',
               fontWeight: 'bold',
-              textAlign: 'center'
+              textAlign: 'center',
+              lineHeight: '1.2'
             }}
           >
             <tr>

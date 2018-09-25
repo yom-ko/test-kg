@@ -1,5 +1,6 @@
 import React from 'react';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import Octicon, { Calendar } from '@githubprimer/octicons-react';
 import {
   Col,
   Label,
@@ -9,7 +10,6 @@ import {
   InputGroupText,
   Tooltip
 } from 'reactstrap';
-import Octicon, { Calendar } from '@githubprimer/octicons-react';
 
 const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
   <>

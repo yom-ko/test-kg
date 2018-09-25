@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import {
   Col,
   Form,
@@ -11,11 +10,11 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupButtonDropdown,
-  Button,
-  Tooltip,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Tooltip,
+  Button
 } from 'reactstrap';
 
 import { history } from 'store';
@@ -214,8 +213,8 @@ export class RequestForm extends Component {
       ...state,
       dates: {
         ...state.dates,
-        startDate: startDate.format('YYYY-MM-DD'),
-        endDate: endDate.format('YYYY-MM-DD')
+        startDate: startDateString,
+        endDate: endDateString
       }
     }));
   }
@@ -230,7 +229,7 @@ export class RequestForm extends Component {
       <>
         <h3 style={{ marginBottom: '2rem' }}>Create request</h3>
         <Form>
-          <FormGroup row>
+          <FormGroup row style={{ marginBottom: '5.5rem' }}>
             <Label for="price" sm={2} style={{ marginLeft: '2rem' }}>
               Price
             </Label>
@@ -257,7 +256,7 @@ export class RequestForm extends Component {
                   </DropdownMenu>
                 </InputGroupButtonDropdown>
                 {/* eslint-disable-next-line max-len */}
-                {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but we omit them in favour of manual checks as per the spec. */}
+                {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but I omit them in favour of manual checks as per the spec. */}
                 <Input
                   type="number"
                   step="1"
@@ -286,7 +285,7 @@ export class RequestForm extends Component {
             </Label>
             <Col sm={5}>
               {/* eslint-disable-next-line max-len */}
-              {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but we omit them in favour of manual checks as per the spec. */}
+              {/* It would make sense to set hard limits on the min/max values with corresponding input attributes, but I omit them in favour of manual checks as per the spec. */}
               <Input
                 type="number"
                 step="1"
