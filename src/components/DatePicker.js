@@ -13,10 +13,10 @@ import {
 
 const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
   <>
-    <Label for="from_until" sm={2} style={{ marginLeft: '2.5rem' }}>
-      From / Until
+    <Label for="from_until" sm={2} style={{ marginLeft: '2.5rem', fontWeight: '450' }}>
+      From/until
     </Label>
-    <Col sm={5}>
+    <Col xs={8} sm={7} lg={5}>
       <DateRangePicker
         containerStyles={{
           width: '100%'
@@ -39,7 +39,7 @@ const DatePicker = ({ startDate, endDate, isDatesValid, checkDates }) => (
       </DateRangePicker>
       <Tooltip
         target="datepicker_group"
-        placement="right"
+        placement="bottom-start"
         hideArrow
         style={{ color: '#000', backgroundColor: '#f7dbbf' }}
         isOpen={!isDatesValid}

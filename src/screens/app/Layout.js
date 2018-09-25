@@ -3,11 +3,9 @@ import { Container, Row, Col } from 'reactstrap';
 
 const Layout = ({ children }) => (
   <Container>
-    <Row>
-      <Col>
-        <div className="mx-auto" style={{ width: '70%', marginTop: '2rem' }}>
-          {children}
-        </div>
+    <Row className="justify-content-center">
+      <Col className="col-sm-12 col-md-9">
+        <section style={{ marginTop: '2.5rem' }}>{children}</section>
       </Col>
     </Row>
   </Container>

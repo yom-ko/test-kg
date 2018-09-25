@@ -278,13 +278,13 @@ class RequestForm extends Component {
 
     return (
       <>
-        <h3 style={{ marginBottom: '2.5rem' }}>Create request</h3>
+        <h3 style={{ marginBottom: '2.6rem' }}>Create request</h3>
         <Form>
-          <FormGroup row style={{ marginBottom: '2rem' }}>
-            <Label for="price" sm={2} style={{ marginLeft: '2.5rem' }}>
+          <FormGroup row style={{ marginBottom: '2.2rem' }}>
+            <Label for="price" sm={2} style={{ marginLeft: '2.5rem', fontWeight: '450' }}>
               Price
             </Label>
-            <Col sm={5}>
+            <Col xs={6} sm={5}>
               <InputGroup id="price_group">
                 <InputGroupButtonDropdown
                   addonType="prepend"
@@ -299,10 +299,10 @@ class RequestForm extends Component {
                   </DropdownToggle>
                   {/* Use event delegation to capture the selected item value */}
                   <DropdownMenu style={{ minWidth: '1.5rem' }} onClick={this.changeCurrency}>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }} value="USD">
+                    <DropdownItem style={{ paddingRight: '1.2rem' }} value="USD">
                       $
                     </DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }} value="EUR">
+                    <DropdownItem style={{ paddingRight: '1.2rem' }} value="EUR">
                       €
                     </DropdownItem>
                   </DropdownMenu>
@@ -331,16 +331,16 @@ class RequestForm extends Component {
                   </DropdownToggle>
                   {/* Use event delegation to capture the selected item value */}
                   <DropdownMenu style={{ minWidth: '1.5rem' }} onClick={this.changeDecimal}>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.00</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.10</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.20</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.30</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.40</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.50</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.60</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.70</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.80</DropdownItem>
-                    <DropdownItem style={{ padding: '0.25rem 1.2rem' }}>.90</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.00</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.10</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.20</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.30</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.40</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.50</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.60</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.70</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.80</DropdownItem>
+                    <DropdownItem style={{ paddingRight: '1.2rem' }}>.90</DropdownItem>
                   </DropdownMenu>
                 </InputGroupButtonDropdown>
               </InputGroup>
@@ -348,18 +348,18 @@ class RequestForm extends Component {
                 target="price_group"
                 placement="right"
                 hideArrow
-                style={{ color: '#000', backgroundColor: '#f7dbbf' }}
+                style={{ width: '10rem', color: '#000', backgroundColor: '#f7dbbf' }}
                 isOpen={!isPriceValid}
               >
                 Enter a number in the range from 10 to 250 !
               </Tooltip>
             </Col>
           </FormGroup>
-          <FormGroup row style={{ marginBottom: '2rem' }}>
-            <Label for="passengers" sm={2} style={{ marginLeft: '2.5rem' }}>
+          <FormGroup row style={{ marginBottom: '2.2rem' }}>
+            <Label for="passengers" sm={2} style={{ marginLeft: '2.5rem', fontWeight: '450' }}>
               Passengers
             </Label>
-            <Col sm={5}>
+            <Col xs={6} sm={5}>
               {/* eslint-disable-next-line max-len */}
               {/* It would make sense to set hard limits on the min/max values using corresponding <input> attributes, but I omit them in favour of manual checks as per the spec. */}
               <Input
@@ -375,7 +375,7 @@ class RequestForm extends Component {
                 target="passengers"
                 placement="right"
                 hideArrow
-                style={{ color: '#000', backgroundColor: '#f7dbbf' }}
+                style={{ width: '10rem', color: '#000', backgroundColor: '#f7dbbf' }}
                 isOpen={!isPassengersValid}
               >
                 Enter a number in the range from 1 to 9 !
@@ -400,7 +400,7 @@ class RequestForm extends Component {
             float: 'right'
           }}
           onClick={this.checkAndSubmit}
-          // Disable the Create button if at least one field is invalid
+          // Disable Create button if at least one field is invalid
           disabled={!isPriceValid || !isPassengersValid || !isDatesValid}
         >
           Create

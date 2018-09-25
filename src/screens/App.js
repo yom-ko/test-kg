@@ -15,7 +15,7 @@ import 'bootstrap-daterangepicker/daterangepicker.css';
 export const App = () => (
   <Layout>
     <Route exact path="/" component={RequestTable} />
-    <Route exact path="/form" component={RequestForm} />
+    <Route path="/form" component={RequestForm} />
   </Layout>
 );
 

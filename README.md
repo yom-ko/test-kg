@@ -1,2 +1,3 @@
-1. CD to src/utils and run `json-server --watch db.json --port 3004`
-2. CD to root dir and run `yarn start`
+1. In the project root, run `yarn` to install deps
+2. Run `json-server --watch src/utils/db.json --port 3004`
+3. Then run `yarn start` to start the dev server
