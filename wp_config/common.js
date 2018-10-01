@@ -1,14 +1,25 @@
+const path = require('path');
+
 // Webpack plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 // Config constants
-const ROOT = `${__dirname}/../`;
+const ROOT = path.resolve(__dirname, '../');
 const ENTRY = `${ROOT}/src/index.js`;
 const OUTPUT = `${ROOT}/build`;
 
 module.exports = {
   entry: ENTRY,
+  output: {
+    path: OUTPUT,
+    filename: '[name].[contenthash:8].js',
+    chunkFilename: '[name].[contenthash:8].js'
+  },
+  resolve: {
+    modules: ['src', 'node_modules'],
+    extensions: ['*', '.js', '.jsx']
+  },
   module: {
     rules: [
       {
@@ -42,20 +53,12 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 4000,
-              name: '[name]_[md5:hash:hex:12].[ext]'
+              name: '[name]_[md5:hash:hex:8].[ext]'
             }
           }
         ]
       }
     ]
-  },
-  resolve: {
-    modules: ['src', 'node_modules'],
-    extensions: ['*', '.js', '.jsx']
-  },
-  output: {
-    path: OUTPUT,
-    filename: '[name].bundle.js'
   },
   plugins: [
     new HtmlWebpackPlugin({
