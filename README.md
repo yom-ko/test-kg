@@ -12,6 +12,5 @@ Key libs used in this project:
   * Icons - Octicons (octicons-react)
 * State Management - Redux (redux + react-redux)
 * Side Effect Management - Redux-Saga (redux-saga)
-* Routing - React Router (react-router + react-router-dom + connected-react-router)
+* Routing - React Router (react-router-dom + connected-react-router)
 * Widgets\* - react-bootstrap-daterangepicker
-
