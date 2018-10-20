@@ -16,7 +16,6 @@ import {
   Button
 } from 'reactstrap';
 
-import { history } from 'store';
 import { actions } from 'modules/app';
 import { getDuration } from 'utils/helpers';
 import DatePicker from 'components/DatePicker';
@@ -67,6 +66,7 @@ class RequestForm extends Component {
 
   // Submit the form data if all correct
   checkAndSubmit() {
+    const { history } = this.props;
     const { price, passengers, dates } = this.state;
     const { isPriceValid } = price;
     const { isPassengersValid } = passengers;
@@ -98,7 +98,7 @@ class RequestForm extends Component {
     addRequest(newRequest);
 
     // Once the request has been sent, take the user to Home page
-    history.push('/');
+    setInterval(history.push('/'), 100);
   }
 
   changePrice(e) {
@@ -223,7 +223,7 @@ class RequestForm extends Component {
     }
   }
 
-  checkDates(ev, picker) {
+  checkDates(_, picker) {
     const { startDate, endDate } = picker;
     const allowedDurations = [2, 5, 21];
 

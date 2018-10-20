@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 
 // Import high-level components
@@ -14,8 +14,10 @@ import 'bootstrap-daterangepicker/daterangepicker.css';
 // App component with routes
 export const App = () => (
   <Layout>
-    <Route exact path="/" component={RequestTable} />
-    <Route path="/form" component={RequestForm} />
+    <Switch>
+      <Route exact path="/" component={RequestTable} />
+      <Route path="/form" component={RequestForm} />
+    </Switch>
   </Layout>
 );
 

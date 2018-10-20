@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { Table, UncontrolledTooltip, Button } from 'reactstrap';
 
-import { history } from 'store';
 import { actions } from 'modules/app';
 import { getDuration } from 'utils/helpers';
 import * as api from 'utils/api';
@@ -51,7 +50,7 @@ class RequestTable extends Component {
 
   // Render view
   render() {
-    const { requests } = this.props;
+    const { history, requests } = this.props;
     const { currentDuration } = this.state;
 
     // Turn the object into an array
