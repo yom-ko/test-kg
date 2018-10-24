@@ -98,7 +98,7 @@ class RequestForm extends Component {
     addRequest(newRequest);
 
     // Once the request has been sent, take the user to Home page
-    setInterval(history.push('/'), 100);
+    setTimeout(history.push('/'), 100);
   }
 
   changePrice(e) {
@@ -330,7 +330,7 @@ class RequestForm extends Component {
                     {priceDecimal}
                   </DropdownToggle>
                   {/* Use event delegation to capture the selected item value */}
-                  <DropdownMenu style={{ minWidth: '1.5rem' }} onClick={this.changeDecimal}>
+                  <DropdownMenu onClick={this.changeDecimal}>
                     <DropdownItem style={{ paddingRight: '1.2rem' }}>.00</DropdownItem>
                     <DropdownItem style={{ paddingRight: '1.2rem' }}>.10</DropdownItem>
                     <DropdownItem style={{ paddingRight: '1.2rem' }}>.20</DropdownItem>
